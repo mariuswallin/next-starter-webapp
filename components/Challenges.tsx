@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { ChallengeMap } from "../types";
 import Challenge from "./Challenge";
+import Title from "./Title";
 
 type ChallengesProps = {
   title: string;
@@ -22,7 +23,7 @@ export default function Challenges({
 }: ChallengesProps) {
   return (
     <form className="challenges" onSubmit={handleSubmit}>
-      <h2>{title}</h2>
+      <Title title={title} />
       <ul>
         {[...challenges.entries()].map(([id, challenge]) => (
           <Challenge

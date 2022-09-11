@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import Challenges from "../../components/Challenges";
-import { createChallenges, operatorMap } from "../../lib/helpers";
+import { createRandomChallenges, operatorMap } from "../../lib/helpers";
 import { ChallengeMap, Operation } from "../../types";
 
 const getOperation = (query: Record<string, unknown>): Operation[1] | null => {
@@ -83,12 +83,9 @@ export default function ChallengePage() {
   useEffect(() => {
     if (operation && query.count && Number(query.count)) {
       setChallenges(
-        createChallenges({
+        createRandomChallenges({
           count: Number(query.count),
           operation,
-          // baseValue: 3,
-          // lowNumber: 5,
-          // highNumber: 8,
         })
       );
     }

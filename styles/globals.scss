@@ -199,3 +199,20 @@ input {
     flex-shrink: 0;
   }
 }
+
+.layout {
+  max-width: 960px;
+  margin: 0 auto;
+  border: 1px solid pink;
+}
+
+@media screen and (max-width: "960px") {
+  body {
+    padding: 0 2rem;
+  }
+
+  .layout {
+    background-color: #f9f9f9;
+    border: 2px solid #333;
+  }
+}

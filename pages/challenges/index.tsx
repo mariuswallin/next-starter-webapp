@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
+import Title from "../../components/Title";
 import { operatorMap } from "../../lib/helpers";
 import { Operation } from "../../types";
 
@@ -15,7 +16,7 @@ export default function ChallengesPage() {
   };
   return (
     <>
-      <h1>Hei. Hva vil du øve deg på i dag?</h1>
+      <Title title={"Hei. Her kan du prøve deg på noen spennende oppgaver"} />
       <p>Under kan du velge antall oppgaver og regneoperasjon</p>
       <input
         type="number"

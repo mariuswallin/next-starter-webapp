@@ -1,4 +1,9 @@
-import { ChallengeMap, Operation } from "../types";
+import {
+  ChallengeLabel,
+  ChallengeMap,
+  CreateChallengeOpts,
+  Operation,
+} from "../types";
 
 const letters = "abcdqwerty";
 
@@ -9,7 +14,7 @@ export const operatorMap: Record<Operation[1], Operation[0]> = {
   divide: "/",
 };
 
-const operationHandler = ([first, second]: number[]): Record<
+export const operationHandler = ([first, second]: [number, number]): Record<
   Operation[0],
   number
 > => ({
@@ -19,7 +24,7 @@ const operationHandler = ([first, second]: number[]): Record<
   "/": first / second,
 });
 
-function random({ lowNumber = 1, highNumber = 10 }) {
+export function random({ lowNumber = 1, highNumber = 10 }) {
   return Math.floor(Math.random() * (highNumber + 1 - lowNumber) + lowNumber);
 }
 
@@ -37,31 +42,41 @@ function generateRandomId() {
     .join("");
 }
 
-type CreateChallengeOpts = {
-  count: number;
-  operation: Operation[1];
-  baseValue?: number;
-  lowNumber?: number;
-  highNumber?: number;
-};
+export function challengeFactory(
+  operation: Operation[1],
+  firstValue: number,
+  secondValue: number,
+  baseValue?: number
+) {
+  const [first, second] = [baseValue || firstValue, secondValue].sort(
+    (a, b) => b - a
+  );
 
-export function createChallenges(options: CreateChallengeOpts): ChallengeMap {
+  const operator = operatorMap[operation];
+  const label = `${first}${operator}${second}` as ChallengeLabel;
+  const result = operationHandler([first, second])[operator];
+  return { numbers: [first, second], label, result, operator };
+}
+
+export function createRandomChallenges(
+  options: CreateChallengeOpts
+): ChallengeMap {
   const values = new Map();
   for (let i = 0; i < options.count; i++) {
-    const randomValues = {
-      lowNumber: options.lowNumber,
-      highNumber: options.highNumber,
-    };
-    const first = options.baseValue || random(randomValues);
-    const second = random(randomValues);
-    const numbers = [first, second].sort((a, b) => b - a);
-    const operator = operatorMap[options.operation];
-    const result = operationHandler(numbers)[operator];
+    const firstValue = random({});
+    const secondValue = random({});
+    const { numbers, result, operator, label } = challengeFactory(
+      options.operation,
+      firstValue,
+      secondValue,
+      options.baseValue
+    );
+
     values.set(generateRandomId(), {
       numbers,
-      result: result,
+      result,
       operator,
-      label: `${numbers[0]}${operator}${numbers[1]}`,
+      label,
     });
   }
   return values;
